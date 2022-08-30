@@ -1,7 +1,95 @@
 body {
-  background: #EDF6FA;
+  background: #edf6fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Roboto;
+  font-weight: 300;
+}
+
+.weather__container {
+  background: white;
+  padding: 4px;
+  border-radius: 8px;
+  width: 600px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 4px;
+}
+
+@media only screen and (max-width: 600px) {
+  .weather__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 .weather__card {
-  background:#EDF6FA;
+  border-radius: 4px;
+  align-self: center;
+  background: #edf6fa;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-weight: 100;
+  background: #edf6fa;
+  .weather__icon {
+    color: #bddde3;
+  }
+}
+
+.weather__card--regular {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 0;
+  .weather__day {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .weather__icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .weather__data {
+    font-size: 2rem;
+    font-family: 'Teko';
+  }
+  .weather__description {
+    display: none;
+  }
+}
+.weather__card--large {
+  grid-column: 1 / 5;
+  padding: 2.25rem 0;
+  width: 100%;
+  .weather__day {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .weather__icon {
+    font-size: 5.5rem;
+  }
+  .weather__data {
+    font-size: 5rem;
+    font-family: 'Teko';
+  }
+  .weather__description {
+  }
+}
+
+@font-face {
+  font-family: 'Teko';
+  src: url('./fonts/Teko-Light.ttf');
+  font-weight: normal;
+  font-style: normal;
 }
