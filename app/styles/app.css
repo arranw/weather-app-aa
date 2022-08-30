@@ -25,7 +25,7 @@ body {
   text-transform: uppercase;
 }
 
-.city__link:first-child {
+.city__link--active {
   color: #5fb0e8;
   font-weight: 700;
 }
