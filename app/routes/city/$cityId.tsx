@@ -1,8 +1,7 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { PrefetchPageLinks, useLoaderData } from '@remix-run/react';
+import { NavLink, PrefetchPageLinks, useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import { CityLink } from '~/components/CityLink';
 import { WeatherCard, WeatherContainer } from '~/components/WeatherCard';
 
 type City = {
@@ -69,9 +68,15 @@ export default function Index() {
       <li className='city__list'>
         {cities.map((city) => (
           <>
-            <CityLink key={city.id} to={`/city/${city.id}`}>
+            <NavLink
+              key={city.id}
+              className={({ isActive }) =>
+                isActive ? 'city__link city__link--active' : 'city__link'
+              }
+              to={`/city/${city.id}`}
+            >
               {city.name}
-            </CityLink>
+            </NavLink>
             <PrefetchPageLinks page={`/city/${city.id}`} />
           </>
         ))}
