@@ -5,7 +5,8 @@
     "build": "remix build",
     "dev": "concurrently \"yarn sass\" \"remix dev\"",
     "start": "remix-serve build",
-    "sass": "sass --watch app/:app/"
+    "sass": "sass --watch app/:app/",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",

@@ -86,7 +86,7 @@ body {
 }
 .weather__card--regular .weather__data {
   font-size: 2rem;
-  font-family: "Teko";
+  font-family: 'Teko';
 }
 .weather__card--regular .weather__description {
   display: none;
@@ -109,11 +109,11 @@ body {
 }
 .weather__card--large .weather__data {
   font-size: 5rem;
-  font-family: "Teko";
+  font-family: 'Teko';
 }
 @font-face {
-  font-family: "Teko";
-  src: url("./fonts/Teko-Light.ttf");
+  font-family: 'Teko';
+  src: url('./fonts/Teko-Light.ttf');
   font-weight: normal;
   font-style: normal;
 }
