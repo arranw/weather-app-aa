@@ -1,6 +1,6 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { PrefetchPageLinks, useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import { CityLink } from '~/components/CityLink';
 import { WeatherCard, WeatherContainer } from '~/components/WeatherCard';
@@ -72,6 +72,7 @@ export default function Index() {
             <CityLink key={city.id} to={`/city/${city.id}`}>
               {city.name}
             </CityLink>
+            <PrefetchPageLinks page={`/city/${city.id}`} />
           </>
         ))}
       </li>
