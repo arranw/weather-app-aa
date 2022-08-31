@@ -5,7 +5,7 @@ import { WeatherIcon } from './WeatherIcon';
 interface WeatherCardProps {
   size?: 'regular' | 'large';
   day?: string;
-  temperature?: string;
+  temperature?: number;
   description?: string;
 }
 export const WeatherCard: React.FC<WeatherCardProps> = ({

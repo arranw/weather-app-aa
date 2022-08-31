@@ -1,75 +1,44 @@
 import type { LoaderFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { NavLink, PrefetchPageLinks, useLoaderData } from '@remix-run/react';
-import invariant from 'tiny-invariant';
+import React from 'react';
 import { WeatherCard, WeatherContainer } from '~/components/WeatherCard';
-
-type City = {
-  id: string;
-  name: string;
-  lat: string;
-  long: string;
-};
+import type { CityType, DailyForecastType } from '~/services/weather.service';
+import { getFiveDayForecast } from '~/services/weather.service';
+import { fetchWeatherForecast } from '~/services/weather.service';
 
 interface LoaderData {
-  cities: City[];
-  weatherData: any;
+  cities: CityType[];
+  forecast: DailyForecastType[];
 }
-
-const getDailyMaxes = (dailyMaxes: []): Record<string, { dt_txt: string; dailyMax: any }> => {
-  return dailyMaxes?.reduce((prev: any, curr: any) => {
-    const currentDate = new Date(curr.dt_txt.substr(0, 10)).toLocaleDateString();
-    const currentTempIsHotter = prev[currentDate]?.dailyMax.main.temp_max < curr.main.temp_max;
-
-    // initialize dt_txt's data
-    const dateNotInitialized = !prev[currentDate];
-    if (dateNotInitialized || currentTempIsHotter) {
-      prev[currentDate] = {
-        date: currentDate,
-        dailyMax: curr,
-      };
-    }
-
-    return prev;
-  }, {});
-};
 
 export const loader: LoaderFunction = async ({ params }) => {
   const cities = [
-    { id: '1', name: 'Ottowa', apiQuery: 'Ottowa,canada', lat: '45.4215', long: '-75.6972' },
-    { id: '2', name: 'Moscow', apiQuery: 'Moscow,russia', lat: '55.7558', long: '37.6173' },
-    { id: '3', name: 'Tokyo', apiQuery: 'Tokyo,japan', lat: '35.6762', long: '139.6503' },
+    { id: '1', name: 'Ottowa', lat: '45.4215', lon: '-75.6972' },
+    { id: '2', name: 'Moscow', lat: '55.7558', lon: '37.6173' },
+    { id: '3', name: 'Tokyo', lat: '35.6762', lon: '139.6503' },
   ];
 
   const selectedCityId = params.cityId;
   const selectedCity = cities.find((city) => city.id === selectedCityId) || cities[0]; // default to first city in list if none selected
-  const weatherRequestEndpoint = process.env.WEATHER_API_URL;
-  invariant(weatherRequestEndpoint, 'Weather API request URL not defined');
-  const weatherRequestApiKey = process.env.WEATHER_API_KEY;
-  invariant(weatherRequestApiKey, 'Weather API key not defined');
 
-  const weatherRequestURL = new URL(weatherRequestEndpoint);
-  const weatherRequestParams = weatherRequestURL.searchParams;
-  weatherRequestParams.append('lat', selectedCity.lat);
-  weatherRequestParams.append('lon', selectedCity.long);
-  weatherRequestParams.append('units', 'metric');
-  weatherRequestParams.append('appid', weatherRequestApiKey);
+  const weatherData = await fetchWeatherForecast(selectedCity);
+  const forecast = getFiveDayForecast(weatherData.list);
 
-  const weatherRes = await fetch(weatherRequestURL.toString());
-  return json<LoaderData>({ cities, weatherData: await weatherRes.json() });
+  return json<LoaderData>({ cities, forecast });
 };
 
 export default function Index() {
-  const { cities, weatherData } = useLoaderData<LoaderData>();
-  const dailyMaxes = Object.values(getDailyMaxes(weatherData.list));
-  console.log(dailyMaxes);
+  const { cities, forecast } = useLoaderData<LoaderData>();
+  // Extract today's weather for the large weather display
+  const todaysForecast = forecast[0];
+
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <li className='city__list'>
         {cities.map((city) => (
-          <>
+          <React.Fragment key={city.id}>
             <NavLink
-              key={city.id}
               className={({ isActive }) =>
                 isActive ? 'city__link city__link--active' : 'city__link'
               }
@@ -78,23 +47,23 @@ export default function Index() {
               {city.name}
             </NavLink>
             <PrefetchPageLinks page={`/city/${city.id}`} />
-          </>
+          </React.Fragment>
         ))}
       </li>
       <WeatherContainer>
         <WeatherCard
           size='large'
           day={'Today'}
-          description={dailyMaxes[0].dailyMax.weather[0].main}
-          temperature={dailyMaxes[0].dailyMax.main.temp_max.toFixed(0)}
+          description={todaysForecast.description}
+          temperature={todaysForecast.temperature}
         />
         <>
-          {dailyMaxes.slice(1, 5).map((dailyMax) => (
+          {forecast.slice(1, 5).map((forecastDay) => (
             <WeatherCard
-              key={dailyMax.dt_txt}
-              day={new Date(dailyMax.dailyMax.dt_txt).toDateString().substring(0, 3)}
-              description={dailyMax.dailyMax.weather[0].main}
-              temperature={dailyMax.dailyMax.main.temp_max.toFixed(0)}
+              key={forecastDay.date}
+              day={new Date(forecastDay.date).toDateString().substring(0, 3)}
+              description={forecastDay.description}
+              temperature={forecastDay.temperature}
             />
           ))}
         </>
