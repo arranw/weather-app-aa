@@ -1,21 +1,18 @@
-import { useSearchParams } from 'react-router-dom';
-import { Link } from '@remix-run/react';
+import { NavLink } from 'react-router-dom';
+import type { To } from 'react-router-dom';
 
 interface CityLinkProps {
   children: string;
-  cityId: string;
+  to: To;
 }
 
-export const CityLink: React.FC<CityLinkProps> = ({ cityId, children }) => {
-  const [searchParams] = useSearchParams();
-  const currentCity = searchParams.get('city');
-
+export const CityLink: React.FC<CityLinkProps> = ({ to, children }) => {
   return (
-    <Link
-      className={currentCity === cityId ? 'city__link city__link--active' : 'city__link'}
-      to={`?city=${cityId}`}
+    <NavLink
+      className={({ isActive }) => (isActive ? 'city__link city__link--active' : 'city__link')}
+      to={to}
     >
       {children}
-    </Link>
+    </NavLink>
   );
 };
