@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCloud } from '@fortawesome/free-solid-svg-icons';
+import { WeatherIcon } from './WeatherIcon';
 
 interface WeatherCardProps {
   size?: 'regular' | 'large';
@@ -18,7 +17,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({
   return (
     <section className={`weather__card weather__card--${size ?? 'regular'}`}>
       <span className='weather__day'>{day}</span>
-      <FontAwesomeIcon className='weather__icon' icon={faCloud} />
+      <WeatherIcon weatherDescription={description} />
       <span className='weather__data'>{temperature}°</span>
       <span className='weather__description'>{description}</span>
     </section>
