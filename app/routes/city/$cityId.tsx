@@ -17,7 +17,7 @@ interface LoaderData {
   weatherData: any;
 }
 
-const getDailyMaxes = (dailyMaxes: []): Record<string, { dt_txt: string; dailyMax: any[] }> => {
+const getDailyMaxes = (dailyMaxes: []): Record<string, { dt_txt: string; dailyMax: any }> => {
   return dailyMaxes?.reduce((prev: any, curr: any) => {
     const currentDate = new Date(curr.dt_txt.substr(0, 10)).toLocaleDateString();
     const currentTempIsHotter = prev[currentDate]?.dailyMax.main.temp_max < curr.main.temp_max;
@@ -54,7 +54,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   weatherRequestParams.append('lat', selectedCity.lat);
   weatherRequestParams.append('lon', selectedCity.long);
   weatherRequestParams.append('units', 'metric');
-  weatherRequestParams.append('cnt', '30');
   weatherRequestParams.append('appid', weatherRequestApiKey);
 
   const weatherRes = await fetch(weatherRequestURL.toString());
@@ -63,8 +62,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function Index() {
   const { cities, weatherData } = useLoaderData<LoaderData>();
-  const dailyMaxes = getDailyMaxes(weatherData.list);
-  console.log(weatherData);
+  const dailyMaxes = Object.values(getDailyMaxes(weatherData.list));
   console.log(dailyMaxes);
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
@@ -78,11 +76,22 @@ export default function Index() {
         ))}
       </li>
       <WeatherContainer>
-        <WeatherCard size='large'></WeatherCard>
-        <WeatherCard></WeatherCard>
-        <WeatherCard></WeatherCard>
-        <WeatherCard></WeatherCard>
-        <WeatherCard></WeatherCard>
+        <WeatherCard
+          size='large'
+          day={'Today'}
+          description={dailyMaxes[0].dailyMax.weather[0].main}
+          temperature={dailyMaxes[0].dailyMax.main.temp_max.toFixed(0)}
+        />
+        <>
+          {dailyMaxes.slice(1, 5).map((dailyMax) => (
+            <WeatherCard
+              key={dailyMax.dt_txt}
+              day={new Date(dailyMax.dailyMax.dt_txt).toDateString().substring(0, 3)}
+              description={dailyMax.dailyMax.weather[0].main}
+              temperature={dailyMax.dailyMax.main.temp_max.toFixed(0)}
+            />
+          ))}
+        </>
       </WeatherContainer>
     </div>
   );

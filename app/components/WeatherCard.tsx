@@ -5,14 +5,22 @@ import { faCloud } from '@fortawesome/free-solid-svg-icons';
 
 interface WeatherCardProps {
   size?: 'regular' | 'large';
+  day?: string;
+  temperature?: string;
+  description?: string;
 }
-export const WeatherCard: React.FC<WeatherCardProps> = ({ size }) => {
+export const WeatherCard: React.FC<WeatherCardProps> = ({
+  size,
+  day,
+  temperature,
+  description,
+}) => {
   return (
     <section className={`weather__card weather__card--${size ?? 'regular'}`}>
-      <span className='weather__day'>Today</span>
+      <span className='weather__day'>{day}</span>
       <FontAwesomeIcon className='weather__icon' icon={faCloud} />
-      <span className='weather__data'>19°</span>
-      <span className='weather__description'>Clouds</span>
+      <span className='weather__data'>{temperature}°</span>
+      <span className='weather__description'>{description}</span>
     </section>
   );
 };
