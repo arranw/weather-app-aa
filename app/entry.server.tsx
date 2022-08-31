@@ -22,6 +22,7 @@ export default function handleRequest(
           const body = new PassThrough();
 
           responseHeaders.set('Content-Type', 'text/html');
+          responseHeaders.set('Cache-Control', 'max-age=300, s-maxage=3600');
 
           resolve(
             new Response(body, {
