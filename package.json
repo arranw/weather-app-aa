@@ -2,11 +2,13 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build",
+    "build": "remix build && yarn install:fonts",
     "dev": "concurrently \"yarn sass\" \"remix dev\"",
     "start": "remix-serve build",
     "sass": "sass --watch app/:app/",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "remix setup node && yarn install:fonts",
+    "install:fonts": "mkdir -p public/build/_assets/fonts && cp -R app/styles/fonts/* public/build/_assets/fonts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
