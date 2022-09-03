@@ -35,9 +35,9 @@ export default function Index() {
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
-      <li className='city__list'>
+      <ul className='city__list'>
         {cities.map((city) => (
-          <React.Fragment key={city.id}>
+          <li key={city.id}>
             <NavLink
               className={({ isActive }) =>
                 isActive ? 'city__link city__link--active' : 'city__link'
@@ -47,9 +47,9 @@ export default function Index() {
               {city.name}
             </NavLink>
             <PrefetchPageLinks page={`/city/${city.id}`} />
-          </React.Fragment>
+          </li>
         ))}
-      </li>
+      </ul>
       <WeatherContainer>
         <WeatherCard
           size='large'
