@@ -14,6 +14,10 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <meta
+          name='description'
+          content='Weather app that displays the current weather and a 4 day forecast for various cities'
+        />
       </head>
       <body>
         <Outlet />
