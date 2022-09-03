@@ -28,7 +28,7 @@ body {
 }
 
 .city__link--active {
-  color: #5fb0e8;
+  color: #1973b3;
   font-weight: 700;
 }
 
@@ -91,7 +91,7 @@ body {
 }
 .weather__card--regular .weather__data {
   font-size: 2rem;
-  font-family: 'Teko';
+  font-family: "Teko";
 }
 .weather__card--regular .weather__description {
   display: none;
@@ -124,15 +124,15 @@ body {
 .weather__card--large .weather__data {
   font-size: 4rem;
   line-height: 70%;
-  font-family: 'Teko';
+  font-family: "Teko";
 }
 .weather__card--large .weather__description {
   font-size: 1.5rem;
 }
 
 @font-face {
-  font-family: 'Teko';
-  src: url('./fonts/Teko-Light.ttf');
+  font-family: "Teko";
+  src: url("./fonts/Teko-Light.ttf");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

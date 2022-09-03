@@ -15,6 +15,7 @@ body {
   margin-bottom: 2rem;
   margin: 2rem 0;
   padding: 0;
+  list-style: none;
 }
 
 .city__link {
@@ -27,7 +28,7 @@ body {
 }
 
 .city__link--active {
-  color: #5fb0e8;
+  color: #1973b3;
   font-weight: 700;
 }
 
