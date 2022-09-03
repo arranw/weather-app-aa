@@ -22,5 +22,12 @@ interface WeatherIconProps {
 export const WeatherIcon: React.FC<WeatherIconProps> = ({ weatherDescription }) => {
   const weatherIcon = getWeatherIcon(weatherDescription);
 
-  return <FontAwesomeIcon className='weather__icon' icon={weatherIcon} />;
+  return (
+    <FontAwesomeIcon
+      className='weather__icon'
+      icon={weatherIcon}
+      title={weatherDescription}
+      aria-label={weatherDescription}
+    />
+  );
 };
